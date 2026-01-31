@@ -32,7 +32,6 @@ CONFIGURE_FLAGS=(
     --enable-protocol=file
     --disable-xlib
     --disable-sdl2                                                                                                       
-    --disable-xcb 
 
     # 解码器
     --disable-decoders
