@@ -54,13 +54,12 @@ jobs:
           msystem: UCRT64
           update: true
           install: >
-            mingw-w64-ucrt-x86_64-gcc
-            mingw-w64-ucrt-x86_64-make
-            mingw-w64-ucrt-x86_64-yasm
-            mingw-w64-ucrt-x86_64-nasm
-            mingw-w64-ucrt-x86_64-pkg-config
             base-devel
             git
+            gcc
+            yasm
+            nasm
+            make
             python
 
       - name: Download FFmpeg
