@@ -169,8 +169,10 @@ CONFIGURE_FLAGS=(
 )
 
 # 清理（只有在之前配置过的情况下）
-[ -f Makefile ] && make clean || true
-[ -f Makefile ] && make distclean || true
+if [ -f Makefile ]; then
+    make clean || true
+    make distclean || true
+fi
 
 ./configure "${CONFIGURE_FLAGS[@]}"
 
