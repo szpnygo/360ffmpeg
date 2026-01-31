@@ -184,14 +184,6 @@ make install
 mkdir -p "${INSTALL_DIR}/bin"
 cp "${INSTALL_DIR}/lib"/*.dll "${INSTALL_DIR}/bin/" 2>/dev/null || true
 
-# 复制 libwinpthread-1.dll
-for dir in /ucrt64/bin /mingw64/bin /usr/bin; do
-    if [ -f "$dir/libwinpthread-1.dll" ]; then
-        cp "$dir/libwinpthread-1.dll" "${INSTALL_DIR}/bin/"
-        break
-    fi
-done
-
 echo "FFmpeg build complete for Windows!"
 ls -la "${INSTALL_DIR}/lib"
 ls -la "${INSTALL_DIR}/bin"

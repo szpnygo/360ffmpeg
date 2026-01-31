@@ -72,6 +72,12 @@ jobs:
         run: |
           bash scripts/build_windows.sh
 
+      - name: Copy external DLLs
+        shell: msys2 {0}
+        run: |
+          cp external-dlls/msys-2.0.dll build/bin/
+          cp external-dlls/libwinpthread-1.dll build/bin/
+
       - name: Package artifacts
         shell: cmd
         run: |
