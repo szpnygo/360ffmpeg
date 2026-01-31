@@ -135,7 +135,7 @@ CONFIGURE_FLAGS=(
     # 线程与依赖优化
     --enable-pthreads
     --extra-cflags=-static-libgcc
-    --extra-ldflags="-static-libgcc"
+    --extra-ldflags="-static -static-libgcc"
 
     # 性能优化
     --enable-hardcoded-tables
