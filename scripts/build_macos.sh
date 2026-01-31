@@ -28,6 +28,8 @@ CONFIGURE_FLAGS=(
     --disable-outdevs
     --disable-programs
     --disable-network
+    --disable-xlib
+    --disable-xcb
     --disable-protocols
     --enable-protocol=file
 

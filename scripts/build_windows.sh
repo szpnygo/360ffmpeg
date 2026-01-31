@@ -132,8 +132,13 @@ CONFIGURE_FLAGS=(
     --enable-bsf=hevc_mp4toannexb
     --enable-bsf=extract_extradata
 
+    # 线程与依赖优化（零外部依赖）
+    --enable-w32threads
+    --disable-pthreads
+    --extra-cflags=-static-libgcc
+    --extra-ldflags="-static-libgcc"
+
     # 性能优化
-    --enable-pthreads
     --enable-hardcoded-tables
     --enable-optimizations
     --enable-runtime-cpudetect

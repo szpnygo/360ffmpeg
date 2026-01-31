@@ -3,7 +3,8 @@
     "allow": [
       "Bash(chmod:*)",
       "Bash(bash:*)",
-      "Bash(file:*)"
+      "Bash(file:*)",
+      "Bash(otool:*)"
     ]
   }
 }
