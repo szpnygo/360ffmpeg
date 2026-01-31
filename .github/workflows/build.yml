@@ -1,0 +1,142 @@
+name: Build FFmpeg Prebuilt Libraries
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+env:
+  FFMPEG_VERSION: n8.0.1
+
+jobs:
+  build-mac:
+    name: Build macOS (ARM64)
+    runs-on: macos-13
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download FFmpeg
+        run: |
+          wget https://github.com/FFmpeg/FFmpeg/archive/refs/tags/${{ env.FFMPEG_VERSION }}.tar.gz
+          tar -xf ${{ env.FFMPEG_VERSION }}.tar.gz
+          mv FFmpeg-${{ env.FFMPEG_VERSION }} ffmpeg
+
+      - name: Build FFmpeg
+        run: |
+          bash scripts/build_macos.sh arm64
+
+      - name: Package artifacts
+        run: |
+          cd build-arm64
+          tar -czf ../ffmpeg-macos-arm64-${{ env.FFMPEG_VERSION }}.tar.gz include lib
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ffmpeg-macos-arm64
+          path: ffmpeg-macos-arm64-${{ env.FFMPEG_VERSION }}.tar.gz
+
+  build-windows:
+    name: Build Windows (MinGW)
+    runs-on: windows-2022
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: >
+            base-devel
+            git
+            gcc
+            yasm
+            nasm
+            make
+            python
+
+      - name: Download FFmpeg
+        run: |
+          wget https://github.com/FFmpeg/FFmpeg/archive/refs/tags/${{ env.FFMPEG_VERSION }}.tar.gz
+          tar -xf ${{ env.FFMPEG_VERSION }}.tar.gz
+          mv FFmpeg-${{ env.FFMPEG_VERSION }} ffmpeg
+
+      - name: Build FFmpeg
+        run: |
+          bash scripts/build_windows.sh
+
+      - name: Package artifacts
+        shell: cmd
+        run: |
+          cd build
+          7z a -tzip ..\ffmpeg-windows-mingw-${{ env.FFMPEG_VERSION }}.zip include lib bin
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ffmpeg-windows-mingw
+          path: ffmpeg-windows-mingw-${{ env.FFMPEG_VERSION }}.zip
+
+  build-linux:
+    name: Build Linux (x86_64)
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y yasm nasm build-essential
+
+      - name: Download FFmpeg
+        run: |
+          wget https://github.com/FFmpeg/FFmpeg/archive/refs/tags/${{ env.FFMPEG_VERSION }}.tar.gz
+          tar -xf ${{ env.FFMPEG_VERSION }}.tar.gz
+          mv FFmpeg-${{ env.FFMPEG_VERSION }} ffmpeg
+
+      - name: Build FFmpeg
+        run: |
+          bash scripts/build_linux.sh
+
+      - name: Package artifacts
+        run: |
+          cd build
+          tar -czf ../ffmpeg-linux-x86_64-${{ env.FFMPEG_VERSION }}.tar.gz include lib
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ffmpeg-linux-x86_64
+          path: ffmpeg-linux-x86_64-${{ env.FFMPEG_VERSION }}.tar.gz
+
+  release:
+    name: Create Release
+    needs: [build-mac, build-windows, build-linux]
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Create Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create ${GITHUB_REF_NAME} \
+            --title "FFmpeg Prebuilt Libraries ${GITHUB_REF_NAME}" \
+            --notes "Prebuilt FFmpeg libraries for macOS, Windows, and Linux." \
+            artifacts/*/ffmpeg-*

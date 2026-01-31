@@ -1,0 +1,23 @@
+# FFmpeg source
+ffmpeg/
+FFmpeg-*/
+*.tar.gz
+
+# Build outputs
+build/
+build-arm64/
+build-x86_64/
+*.tar.gz
+*.zip
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
