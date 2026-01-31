@@ -3,7 +3,7 @@ name: Build FFmpeg Prebuilt Libraries
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
   workflow_dispatch:
 
 env:
@@ -12,7 +12,7 @@ env:
 jobs:
   build-mac:
     name: Build macOS (ARM64)
-    runs-on: macos-13
+    runs-on: macos-14
     steps:
       - name: Checkout
         uses: actions/checkout@v4
