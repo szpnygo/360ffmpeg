@@ -30,6 +30,10 @@ CONFIGURE_FLAGS=(
     --disable-network
     --disable-protocols
     --enable-protocol=file
+    --disable-x11                                                                                                        
+    --disable-xlib
+    --disable-sdl2                                                                                                       
+    --disable-xcb 
 
     # 解码器
     --disable-decoders
