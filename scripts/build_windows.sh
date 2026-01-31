@@ -134,8 +134,8 @@ CONFIGURE_FLAGS=(
 
     # 线程与依赖优化
     --enable-pthreads
-    --extra-cflags=-static-libgcc
-    --extra-ldflags="-static-libgcc"
+    # --extra-cflags=-static-libgcc
+    # --extra-ldflags="-static-libgcc"
 
     # 性能优化
     --enable-hardcoded-tables
@@ -143,7 +143,7 @@ CONFIGURE_FLAGS=(
     --enable-runtime-cpudetect
     --enable-stripping
     --disable-debug
-    --enable-lto
+    --disable-lto
 
     # Windows 特定选项
     --enable-d3d11va
