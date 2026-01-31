@@ -153,11 +153,14 @@ CONFIGURE_FLAGS=(
     --enable-encoder=prores_videotoolbox
     --enable-asm
     --enable-inline-asm
+
+    --extra-cflags="-framework Accelerate"
+    --extra-ldflags="-framework Accelerate -framework CoreFoundation -framework CoreMedia -framework CoreVideo -framework VideoToolbox -framework AudioToolbox"
 )
 
 # 架构特定选项
 if [ "$ARCH" = "arm64" ]; then
-    CONFIGURE_FLAGS+=(--arch=aarch64 --enable-neon --enable-vfp)
+    CONFIGURE_FLAGS+=(--arch=arm64 --enable-neon --enable-vfp)
 else
     CONFIGURE_FLAGS+=(--arch=x86_64)
 fi
