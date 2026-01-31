@@ -126,7 +126,6 @@ CONFIGURE_FLAGS=(
     --enable-runtime-cpudetect
     --enable-stripping
     --disable-debug
-    --enable-lto
 
     # Linux 特定选项
     --enable-asm

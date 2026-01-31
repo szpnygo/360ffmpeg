@@ -143,7 +143,6 @@ CONFIGURE_FLAGS=(
     --enable-runtime-cpudetect
     --enable-stripping
     --disable-debug
-    --disable-lto
 
     # Windows 特定选项
     --enable-d3d11va

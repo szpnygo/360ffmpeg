@@ -136,7 +136,6 @@ CONFIGURE_FLAGS=(
     --enable-runtime-cpudetect
     --enable-stripping
     --disable-debug
-    --enable-lto
 
     # macOS 特定选项
     --enable-videotoolbox
